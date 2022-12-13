@@ -5,6 +5,7 @@ from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 from module import Attention, PreNorm, FeedForward
 import numpy as np
+from termcolor import cprint
 
 
 class Transformer(nn.Module):
@@ -47,8 +48,8 @@ class ViViT(nn.Module):
     ):
         super().__init__()
 
-        assert pool in {'cls',
-                        'mean'}, 'pool type must be either cls (cls token) or mean (mean pooling)'
+        # assert pool in {'cls',
+        #                 'mean'}, 'pool type must be either cls (cls token) or mean (mean pooling)'
 
         assert image_size % patch_size == 0, 'Image dimensions must be divisible by the patch size.'
         num_patches = (image_size // patch_size)**2
@@ -59,17 +60,17 @@ class ViViT(nn.Module):
         )
 
         self.pos_embedding = nn.Parameter(torch.randn(1, num_frames, num_patches + 1, dim))
-        self.space_token = nn.Parameter(torch.randn(1, 1, dim))
+        # self.space_token = nn.Parameter(torch.randn(1, 1, dim))
         self.space_transformer = Transformer(dim, depth, heads, dim_head, dim * scale_dim, dropout)
 
-        self.temporal_token = nn.Parameter(torch.randn(1, 1, dim))
+        # self.temporal_token = nn.Parameter(torch.randn(1, 1, dim))
         self.temporal_transformer = Transformer(dim, depth, heads, dim_head, dim * scale_dim,
                                                 dropout)
 
         self.dropout = nn.Dropout(emb_dropout)
-        self.pool = pool
+        # self.pool = pool
 
-        self.mlp_head = nn.Sequential(nn.LayerNorm(dim), nn.Linear(dim, num_classes))
+        # self.mlp_head = nn.Sequential(nn.LayerNorm(dim), nn.Linear(dim, num_classes))
 
     def forward(self, x):
         x = self.to_patch_embedding(x)
