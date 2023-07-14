@@ -1,11 +1,12 @@
+import numpy as np
 import torch
 from torch import nn, einsum
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
-from module import Attention, PreNorm, FeedForward
-import numpy as np
 from termcolor import cprint
+
+from vivit.module import Attention, PreNorm, FeedForward
 
 
 class Transformer(nn.Module):
